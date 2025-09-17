@@ -57,33 +57,33 @@ export function generateRandomROI(baseROI: number, volatility: number = 0.1): nu
 export function getStatusColor(status: string): string {
   const statusColors: Record<string, string> = {
     // Transaction statuses
-    pending: 'bg-warning-100 text-warning-800',
-    processing: 'bg-primary-100 text-primary-800',
-    completed: 'bg-success-100 text-success-800',
-    failed: 'bg-danger-100 text-danger-800',
-    cancelled: 'bg-secondary-100 text-secondary-800',
+    pending: 'bg-yellow-100 text-yellow-800',
+    processing: 'bg-blue-100 text-blue-800',
+    completed: 'bg-green-100 text-green-800',
+    failed: 'bg-red-100 text-red-800',
+    cancelled: 'bg-gray-100 text-gray-800',
     
     // Account statuses
-    active: 'bg-success-100 text-success-800',
-    suspended: 'bg-warning-100 text-warning-800',
-    closed: 'bg-danger-100 text-danger-800',
+    active: 'bg-green-100 text-green-800',
+    suspended: 'bg-yellow-100 text-yellow-800',
+    closed: 'bg-red-100 text-red-800',
     
     // KYC statuses
-    approved: 'bg-success-100 text-success-800',
-    rejected: 'bg-danger-100 text-danger-800',
-    in_review: 'bg-primary-100 text-primary-800',
+    approved: 'bg-green-100 text-green-800',
+    rejected: 'bg-red-100 text-red-800',
+    in_review: 'bg-blue-100 text-blue-800',
     
     // Risk levels
-    low: 'bg-success-100 text-success-800',
-    medium: 'bg-warning-100 text-warning-800',
-    high: 'bg-danger-100 text-danger-800',
+    low: 'bg-green-100 text-green-800',
+    medium: 'bg-yellow-100 text-yellow-800',
+    high_risk: 'bg-red-100 text-red-800',
     
     // Priority levels
-    critical: 'bg-danger-100 text-danger-800',
-    high: 'bg-warning-100 text-warning-800',
+    critical: 'bg-red-100 text-red-800',
+    high_priority: 'bg-yellow-100 text-yellow-800',
     
     // Default
-    default: 'bg-secondary-100 text-secondary-800',
+    default: 'bg-gray-100 text-gray-800',
   }
   
   return statusColors[status] || statusColors.default
@@ -91,9 +91,9 @@ export function getStatusColor(status: string): string {
 
 export function getRiskColor(risk: string): string {
   const riskColors: Record<string, string> = {
-    low: 'text-success-600',
-    medium: 'text-warning-600',
-    high: 'text-danger-600',
+    low: 'text-green-600',
+    medium: 'text-yellow-600',
+    high: 'text-red-600',
   }
   return riskColors[risk] || riskColors.medium
 }

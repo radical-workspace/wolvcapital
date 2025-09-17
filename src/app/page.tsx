@@ -5,14 +5,14 @@ import { TrendingUp, Shield, Users, BarChart3, ArrowRight, CheckCircle } from 'l
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-gray-50">
       {/* Navigation */}
       <nav className="container mx-auto flex items-center justify-between py-6">
         <div className="flex items-center space-x-2">
-          <div className="h-8 w-8 bg-primary-600 rounded-lg flex items-center justify-center">
+          <div className="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center">
             <TrendingUp className="h-5 w-5 text-white" />
           </div>
-          <span className="text-xl font-bold text-secondary-900">WolvCapital</span>
+          <span className="text-xl font-bold text-gray-900">WolvCapital</span>
         </div>
         <div className="flex items-center space-x-4">
           <Link href="/auth/login">
@@ -26,11 +26,11 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-20 text-center">
-        <h1 className="text-5xl md:text-6xl font-bold text-secondary-900 mb-6">
+        <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
           Invest Smarter with{' '}
-          <span className="text-primary-600">WolvCapital</span>
+          <span className="text-blue-600">WolvCapital</span>
         </h1>
-        <p className="text-xl text-secondary-600 mb-8 max-w-3xl mx-auto">
+        <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
           Build your wealth with our comprehensive investment platform. Access professional-grade 
           investment plans with realistic daily returns and expert portfolio management.
         </p>

@@ -425,11 +425,12 @@ export interface UserMetadata {
   avatar_url?: string
 }
 
-export interface UserProfile extends Database['public']['Tables']['user_profiles']['Row'] {}
-export interface InvestmentPlan extends Database['public']['Tables']['investment_plans']['Row'] {}
-export interface Transaction extends Database['public']['Tables']['transactions']['Row'] {}
-export interface UserInvestment extends Database['public']['Tables']['user_investments']['Row'] {}
-export interface AdminApproval extends Database['public']['Tables']['admin_approvals']['Row'] {}
+// Simplified types for working with the database
+export type UserProfile = Database['public']['Tables']['user_profiles']['Row']
+export type InvestmentPlan = Database['public']['Tables']['investment_plans']['Row']
+export type Transaction = Database['public']['Tables']['transactions']['Row']
+export type UserInvestment = Database['public']['Tables']['user_investments']['Row']
+export type AdminApproval = Database['public']['Tables']['admin_approvals']['Row']
 
 // Additional utility types
 export type TransactionStatus = Database['public']['Tables']['transactions']['Row']['status']

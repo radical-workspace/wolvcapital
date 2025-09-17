@@ -10,7 +10,12 @@
     "lint": "next lint",
     "type-check": "tsc --noEmit"
   },
-  "keywords": ["investment", "platform", "supabase", "nextjs"],
+  "keywords": [
+    "investment",
+    "platform",
+    "supabase",
+    "nextjs"
+  ],
   "author": "WolvCapital Team",
   "license": "Proprietary",
   "dependencies": {
@@ -37,7 +42,7 @@
     "eslint": "^9.35.0",
     "eslint-config-next": "^15.5.3",
     "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.13",
+    "tailwindcss": "^3.4.17",
     "typescript": "^5.9.2"
   }
 }
