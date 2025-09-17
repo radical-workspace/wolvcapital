@@ -28,12 +28,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const isAdmin = user?.user_metadata?.role === 'admin' || user?.app_metadata?.claims_admin === true
 
   useEffect(() => {
+    const fetchProfileData = async (userId: string) => {
+      try {
+        const { data, error } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('id', userId)
+          .single()
+
+        if (error && error.code !== 'PGRST116') {
+          console.error('Error fetching profile:', error)
+        } else {
+          setProfile(data)
+        }
+      } catch (error) {
+        console.error('Error fetching profile:', error)
+        // For demo purposes, set a mock profile if database is not available
+        setProfile({
+          id: userId,
+          full_name: user?.user_metadata?.full_name || 'Demo User',
+          account_status: 'active',
+          email: user?.email
+        } as any)
+      } finally {
+        setLoading(false)
+      }
+    }
+
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
       setUser(session?.user ?? null)
       if (session?.user) {
-        fetchProfile(session.user.id)
+        fetchProfileData(session.user.id)
       } else {
         setLoading(false)
       }
@@ -50,7 +77,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(session?.user ?? null)
       
       if (session?.user) {
-        await fetchProfile(session.user.id)
+        await fetchProfileData(session.user.id)
       } else {
         setProfile(null)
         setLoading(false)
@@ -59,33 +86,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     return () => subscription?.unsubscribe()
   }, [])
-
-  const fetchProfile = async (userId: string) => {
-    try {
-      const { data, error } = await supabase
-        .from('user_profiles')
-        .select('*')
-        .eq('id', userId)
-        .single()
-
-      if (error && error.code !== 'PGRST116') {
-        console.error('Error fetching profile:', error)
-      } else {
-        setProfile(data)
-      }
-    } catch (error) {
-      console.error('Error fetching profile:', error)
-      // For demo purposes, set a mock profile if database is not available
-      setProfile({
-        id: userId,
-        full_name: user?.user_metadata?.full_name || 'Demo User',
-        account_status: 'active',
-        email: user?.email
-      } as any)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const signIn = async (email: string, password: string) => {
     try {
