@@ -1,6 +1,6 @@
 # WolvCapital
 
-**Invest smarter in WolvCapital** - A comprehensive investment platform built with modern web technologies and Supabase.
+**Invest smarter in WolvCapital** - A comprehensive investment platform built with Next.js frontend and Laravel backend.
 
 ## Overview
 
@@ -10,6 +10,19 @@ WolvCapital is a full-featured investment platform that enables users to:
 - Track performance and returns in real-time
 - Manage transactions and withdrawals
 - Complete KYC verification and compliance workflows
+
+## Architecture
+
+### Modern Full-Stack Setup
+- **Frontend**: Next.js with TypeScript and Tailwind CSS
+- **Backend**: Laravel API with comprehensive REST endpoints
+- **Database**: MySQL/PostgreSQL with Laravel Eloquent ORM
+- **Authentication**: Laravel-based JWT authentication
+
+### System Architecture
+```
+Next.js Frontend ↔ Laravel API ↔ Database (MySQL/PostgreSQL)
+```
 
 ## Features
 
@@ -29,9 +42,10 @@ WolvCapital is a full-featured investment platform that enables users to:
 
 ## Database Schema
 
-The platform is built on a robust Supabase (PostgreSQL) database with:
+The platform is built on a robust Laravel-managed database with:
 
 ### Core Tables
+- **users**: User authentication and basic info
 - **user_profiles**: Extended user information and investment preferences
 - **investment_plans**: Available investment products and configurations
 - **transactions**: All financial transactions and payment processing
@@ -39,61 +53,131 @@ The platform is built on a robust Supabase (PostgreSQL) database with:
 - **admin_approvals**: Approval workflow management
 
 ### Key Features
-- Row Level Security (RLS) for data protection
-- Automated business logic with triggers and functions
-- Real-time subscriptions for live updates
-- Performance optimization with proper indexing
-- Comprehensive audit trails
+- Laravel Eloquent ORM for data relationships
+- Database migrations for version control
+- Model-based business logic validation
+- Comprehensive indexing for performance
+- Built-in audit trails and timestamps
 
 ## Quick Start
 
-### Database Setup
+### Prerequisites
+- Node.js 18+ for frontend
+- PHP 8.2+ for backend
+- MySQL or PostgreSQL database
+- Composer for PHP dependencies
 
-1. **Initialize Supabase**:
+### Installation
+
+1. **Clone the repository**:
    ```bash
-   # Install Supabase CLI
-   npm install -g @supabase/cli
+   git clone <repository-url>
+   cd wolvcapital
+   ```
+
+2. **Frontend Setup**:
+   ```bash
+   npm install
+   cp .env.example .env.local
+   # Update NEXT_PUBLIC_LARAVEL_API_URL in .env.local
+   ```
+
+3. **Backend Setup**:
+   ```bash
+   npm run backend:install
+   cp backend/.env.example backend/.env
+   # Configure database settings in backend/.env
+   cd backend && php artisan key:generate
+   ```
+
+4. **Database Setup**:
+   ```bash
+   npm run backend:migrate
+   npm run backend:seed  # Optional: Load sample data
+   ```
+
+5. **Start Development Servers**:
+   ```bash
+   # Terminal 1 - Frontend
+   npm run dev
    
-   # Start local development
-   supabase start
+   # Terminal 2 - Backend API
+   npm run backend:serve
    ```
 
-2. **Apply Schema**:
-   ```bash
-   # Run all migrations
-   supabase db reset
-   
-   # Load sample data
-   supabase db seed
-   ```
-
-3. **Verify Setup**:
-   ```bash
-   # Run verification script
-   supabase db shell < supabase/verify_schema.sql
-   ```
+6. **Access the Application**:
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:8000
 
 ### Environment Configuration
 
+**Frontend (.env.local)**:
 ```env
-NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+NEXT_PUBLIC_LARAVEL_API_URL=http://localhost:8000/api
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+**Backend (backend/.env)**:
+```env
+APP_NAME="WolvCapital API"
+APP_URL=http://localhost:8000
+FRONTEND_URL=http://localhost:3000
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=wolvcapital
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
 ```
 
 ## Project Structure
 
 ```
 wolvcapital/
-├── supabase/                 # Database schema and configuration
-│   ├── migrations/          # SQL migration files
-│   ├── seed/               # Sample data for development
-│   ├── config.toml         # Supabase configuration
-│   └── README.md           # Database setup guide
-├── docs/                   # Documentation
-│   └── database-schema.md  # Detailed schema documentation
-└── README.md              # This file
+├── backend/                   # Laravel API backend
+│   ├── app/
+│   │   ├── Models/           # Eloquent models
+│   │   └── Http/Controllers/Api/ # API controllers
+│   ├── database/
+│   │   ├── migrations/       # Database migrations
+│   │   └── seeders/         # Sample data seeders
+│   ├── routes/api.php       # API routes
+│   └── config/              # Laravel configuration
+├── src/                     # Next.js frontend
+│   ├── app/                 # Next.js app directory
+│   ├── components/          # React components
+│   ├── hooks/               # Custom React hooks
+│   ├── lib/                 # Utility libraries
+│   └── types/               # TypeScript definitions
+├── docs/                    # Documentation
+│   ├── migration-guide.md   # Migration documentation
+│   └── database-schema.md   # Database documentation
+└── README.md               # This file
 ```
+
+## API Endpoints
+
+### Authentication
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
+- `POST /api/auth/logout` - User logout
+
+### User Profile
+- `GET /api/profile` - Get user profile
+- `PUT /api/profile` - Update user profile
+- `GET /api/profile/investment-summary` - Get investment summary
+
+### Investment Plans
+- `GET /api/investment-plans` - List investment plans
+- `GET /api/investment-plans/{id}` - Get specific plan
+- `POST /api/investment-plans` - Create plan (admin)
+- `PUT /api/investment-plans/{id}` - Update plan (admin)
+
+### Transactions
+- `GET /api/transactions` - List user transactions
+- `POST /api/transactions/invest` - Create investment
+- `POST /api/transactions/withdraw` - Request withdrawal
 
 ## Investment Plans
 
@@ -121,38 +205,85 @@ The platform offers various investment options:
 
 ## Security & Compliance
 
-- **Data Protection**: Row-level security at database level
-- **Authentication**: Supabase Auth with role-based access
+- **Authentication**: Laravel JWT-based authentication
+- **Authorization**: Role-based access control (user/admin)
+- **Data Validation**: Server-side validation with Laravel
 - **Audit Trails**: Complete transaction and approval history
 - **KYC Compliance**: Built-in identity verification workflow
 - **Financial Regulations**: Designed for regulatory compliance
 
 ## API Examples
 
-### Get User Portfolio
+### Authentication
 ```javascript
-const { data } = await supabase
-  .from('user_portfolio')
-  .select('*')
-  .eq('user_id', userId);
+// Register
+const response = await fetch('/api/auth/register', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    email: 'user@example.com',
+    password: 'password123',
+    first_name: 'John',
+    last_name: 'Doe'
+  })
+})
+
+// Login
+const response = await fetch('/api/auth/login', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    email: 'user@example.com',
+    password: 'password123'
+  })
+})
+```
+
+### Get Investment Plans
+```javascript
+const response = await fetch('/api/investment-plans?status=active')
+const data = await response.json()
+console.log(data.plans)
 ```
 
 ### Create Investment
 ```javascript
-const { data } = await supabase
-  .from('transactions')
-  .insert({
-    user_id: userId,
-    investment_plan_id: planId,
-    transaction_type: 'investment',
-    amount: 5000.00
-  });
+const response = await fetch('/api/transactions/invest', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  },
+  body: JSON.stringify({
+    investment_plan_id: 'plan-uuid',
+    amount: 5000.00,
+    payment_method: 'bank_transfer'
+  })
+})
+```
+
+## Development Commands
+
+```bash
+# Frontend
+npm run dev              # Start Next.js development server
+npm run build            # Build for production
+npm run lint             # Run ESLint
+
+# Backend
+npm run backend:serve    # Start Laravel development server
+npm run backend:migrate  # Run database migrations
+npm run backend:fresh    # Fresh migration with seeding
+npm run backend:seed     # Run database seeders
+
+# Combined development
+npm run dev && npm run backend:serve  # Start both servers
 ```
 
 ## Documentation
 
-- [Database Schema Documentation](docs/database-schema.md)
-- [Supabase Setup Guide](supabase/README.md)
+- [Migration Guide](docs/migration-guide.md) - Supabase to Laravel migration details
+- [Database Schema Documentation](docs/database-schema.md) - Database structure and relationships
 
 ## Contributing
 
@@ -169,4 +300,4 @@ This project is proprietary software. All rights reserved.
 
 ---
 
-**WolvCapital** - Building the future of smart investing.
+**WolvCapital** - Building the future of smart investing with modern technology.

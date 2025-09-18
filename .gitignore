@@ -54,3 +54,27 @@ temp/
 # Cache
 .cache/
 .parcel-cache/
+
+# Laravel Backend
+backend/vendor/
+backend/node_modules/
+backend/.env
+backend/.env.backup
+backend/.phpunit.result.cache
+backend/storage/*.key
+backend/storage/app/public/
+backend/storage/framework/cache/
+backend/storage/framework/sessions/
+backend/storage/framework/testing/
+backend/storage/framework/views/
+backend/storage/logs/
+backend/bootstrap/cache/*.php
+backend/public/hot
+backend/public/storage
+backend/composer.lock
+backend/package-lock.json
+backend/Homestead.json
+backend/Homestead.yaml
+backend/.nova
+backend/.vagrant
+backend/vite.config.js.timestamp-*
