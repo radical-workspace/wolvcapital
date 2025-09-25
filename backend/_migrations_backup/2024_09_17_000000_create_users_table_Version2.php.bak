@@ -1,0 +1,3 @@
+<?php
+// Backup of duplicate migration moved to avoid conflicts.
+// Original path: database/migrations/2024_09_17_000000_create_users_table_Version2.php

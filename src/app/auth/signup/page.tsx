@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useAuth } from '@/hooks/useAuth'
+import { apiRequest } from '@/lib/api'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -23,7 +23,6 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
 
-  const { signUp } = useAuth()
   const router = useRouter()
 
   const validateForm = () => {
@@ -64,17 +63,19 @@ export default function SignupPage() {
     setLoading(true)
 
     try {
-      const { error } = await signUp(formData.email, formData.password, formData.fullName)
-      
-      if (error) {
-        setErrors({ submit: error.message })
-      } else {
-        router.push('/auth/login')
-      }
-    } catch (err) {
-      setErrors({ submit: 'An unexpected error occurred' })
+      await apiRequest('/api/register', {
+        method: 'POST',
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+          full_name: formData.fullName,
+        }),
+      });
+      router.push('/auth/login');
+    } catch (err: any) {
+      setErrors({ submit: err.message || 'Registration failed' });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 

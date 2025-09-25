@@ -1,20 +1,33 @@
 'use client'
 
-import { useAuth } from '@/hooks/useAuth'
+import { useEffect, useState } from 'react';
+import { apiRequest } from '@/lib/api';
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { TrendingUp, Users, DollarSign, AlertTriangle, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
 
 export default function AdminPage() {
-  const { user, signOut, profile } = useAuth()
+  const [profile, setProfile] = useState<any>(null);
+  const [user, setUser] = useState<any>(null);
+  const [stats, setStats] = useState<any>(null);
 
-  const mockAdminStats = {
-    totalUsers: 1247,
-    totalInvestments: 5840000,
-    pendingApprovals: 23,
-    activeInvestmentPlans: 8
-  }
+  useEffect(() => {
+    async function fetchProfileAndStats() {
+      try {
+        const profileData = await apiRequest('/api/profile');
+        setProfile(profileData.profile);
+        setUser(profileData.profile?.user || null);
+        const statsData = await apiRequest('/api/admin/stats');
+        setStats(statsData);
+      } catch (err) {
+        setProfile(null);
+        setUser(null);
+        setStats(null);
+      }
+    }
+    fetchProfileAndStats();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -35,7 +48,10 @@ export default function AdminPage() {
               <span className="text-gray-700">
                 Admin: {profile?.full_name || user?.email}
               </span>
-              <Button variant="outline" onClick={signOut}>
+              <Button variant="outline" onClick={async () => {
+                await apiRequest('/api/logout', { method: 'POST' });
+                window.location.href = '/auth/login';
+              }}>
                 Sign Out
               </Button>
             </div>
@@ -58,7 +74,7 @@ export default function AdminPage() {
                 <div>
                   <p className="text-sm text-gray-600">Total Users</p>
                   <p className="text-2xl font-bold text-gray-900">
-                    {mockAdminStats.totalUsers.toLocaleString()}
+                    {stats ? stats.totalUsers.toLocaleString() : '—'}
                   </p>
                 </div>
                 <Users className="h-8 w-8 text-blue-600" />
@@ -72,7 +88,7 @@ export default function AdminPage() {
                 <div>
                   <p className="text-sm text-gray-600">Total Investments</p>
                   <p className="text-2xl font-bold text-gray-900">
-                    ${mockAdminStats.totalInvestments.toLocaleString()}
+                    {stats ? stats.totalInvestments.toLocaleString() : '—'}
                   </p>
                 </div>
                 <DollarSign className="h-8 w-8 text-green-600" />
@@ -86,7 +102,7 @@ export default function AdminPage() {
                 <div>
                   <p className="text-sm text-gray-600">Pending Approvals</p>
                   <p className="text-2xl font-bold text-yellow-600">
-                    {mockAdminStats.pendingApprovals}
+                    {stats ? stats.pendingApprovals : '—'}
                   </p>
                 </div>
                 <AlertTriangle className="h-8 w-8 text-yellow-600" />
@@ -100,7 +116,7 @@ export default function AdminPage() {
                 <div>
                   <p className="text-sm text-gray-600">Active Plans</p>
                   <p className="text-2xl font-bold text-gray-900">
-                    {mockAdminStats.activeInvestmentPlans}
+                    {stats ? stats.activeInvestmentPlans : '—'}
                   </p>
                 </div>
                 <CheckCircle className="h-8 w-8 text-green-600" />
@@ -156,7 +172,7 @@ export default function AdminPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <Button className="w-full">
-                Pending Approvals ({mockAdminStats.pendingApprovals})
+                Pending Approvals ({stats ? stats.pendingApprovals : '—'})
               </Button>
               <Button variant="outline" className="w-full">
                 User Management

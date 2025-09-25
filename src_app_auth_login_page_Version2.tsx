@@ -1,20 +1,31 @@
 'use client';
 import { useState } from 'react';
-import { useAuth } from '../../../hooks/useAuth-laravel';
+import { apiRequest } from '@/lib/api';
+// Update the import path and filename to match your actual hook file
+// import { useAuth } from ;
+// If your useAuth hook is located elsewhere, update the path accordingly, e.g.:
+// import { useAuth } from '../hooks/useAuth';
+// import { useAuth } from '@/hooks/useAuth';
 
 export default function LoginPage() {
-  const { login } = useAuth();
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
 
-  const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
-  const handleSubmit = async e => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError('');
     try {
-      await login(form.email, form.password);
+      await apiRequest('/api/login', {
+        method: 'POST',
+        body: JSON.stringify({
+          email: form.email,
+          password: form.password,
+        }),
+      });
       window.location.href = '/dashboard';
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Login failed');
+      setError(err.message || 'Login failed');
     }
   };
 

@@ -1,0 +1,10 @@
+HTTP/1.1 201 Created
+Host: 127.0.0.1:8000
+Connection: close
+X-Powered-By: PHP/8.4.13
+Cache-Control: no-cache, private
+Date: Thu, 25 Sep 2025 07:27:10 GMT
+Content-Type: application/json
+Access-Control-Allow-Origin: *
+
+{"message":"User registered successfully","user":{"id":"9ff5e8e3-a46c-45e3-b200-64ceda3905d4","email":"e2e_test_user2@example.com","role":"user"}}

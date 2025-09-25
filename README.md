@@ -301,3 +301,19 @@ This project is proprietary software. All rights reserved.
 ---
 
 **WolvCapital** - Building the future of smart investing with modern technology.
+
+## Production
+
+See `docs/production-deploy.md` for an overview of a production deployment using Docker.
+
+Quick start (build & run using Docker Compose):
+
+```bash
+docker compose -f docker-compose.prod.yml build --pull
+docker compose -f docker-compose.prod.yml up -d
+```
+
+Notes:
+- The provided compose file uses Postgres as an example — update `backend/.env` to point to your production DB and secrets management solution before running.
+- Replace SQLite with Postgres/MySQL in production.
+

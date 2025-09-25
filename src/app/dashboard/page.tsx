@@ -1,21 +1,33 @@
 'use client'
 
-import { useAuth } from '@/hooks/useAuth'
+import { useEffect, useState } from 'react';
+import { apiRequest } from '@/lib/api';
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { TrendingUp, ArrowUpRight, DollarSign, PieChart } from 'lucide-react'
 import Link from 'next/link'
 
 export default function DashboardPage() {
-  const { user, signOut, profile } = useAuth()
+  const [profile, setProfile] = useState<any>(null);
+  const [user, setUser] = useState<any>(null);
+  const [stats, setStats] = useState<any>(null);
 
-  const mockStats = {
-    totalInvested: 25000,
-    currentValue: 28500,
-    totalGains: 3500,
-    returnPercentage: 14.0,
-    activeInvestments: 3
-  }
+  useEffect(() => {
+    async function fetchProfileAndStats() {
+      try {
+        const profileData = await apiRequest('/api/profile');
+        setProfile(profileData.profile);
+        setUser(profileData.profile?.user || null);
+        const statsData = await apiRequest('/api/profile/investment-summary');
+        setStats(statsData.summary);
+      } catch (err) {
+        setProfile(null);
+        setUser(null);
+        setStats(null);
+      }
+    }
+    fetchProfileAndStats();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -35,7 +47,10 @@ export default function DashboardPage() {
               <span className="text-gray-700">
                 Welcome, {profile?.full_name || user?.email}
               </span>
-              <Button variant="outline" onClick={signOut}>
+              <Button variant="outline" onClick={async () => {
+                await apiRequest('/api/logout', { method: 'POST' });
+                window.location.href = '/auth/login';
+              }}>
                 Sign Out
               </Button>
             </div>
@@ -58,7 +73,7 @@ export default function DashboardPage() {
                 <div>
                   <p className="text-sm text-gray-600">Total Invested</p>
                   <p className="text-2xl font-bold text-gray-900">
-                    ${mockStats.totalInvested.toLocaleString()}
+                    {stats ? stats.totalInvested.toLocaleString() : '—'}
                   </p>
                 </div>
                 <DollarSign className="h-8 w-8 text-blue-600" />
@@ -72,7 +87,7 @@ export default function DashboardPage() {
                 <div>
                   <p className="text-sm text-gray-600">Current Value</p>
                   <p className="text-2xl font-bold text-gray-900">
-                    ${mockStats.currentValue.toLocaleString()}
+                    {stats ? stats.currentValue.toLocaleString() : '—'}
                   </p>
                 </div>
                 <TrendingUp className="h-8 w-8 text-green-600" />
@@ -86,7 +101,7 @@ export default function DashboardPage() {
                 <div>
                   <p className="text-sm text-gray-600">Total Gains</p>
                   <p className="text-2xl font-bold text-green-600">
-                    +${mockStats.totalGains.toLocaleString()}
+                    {stats ? '+' + stats.totalGains.toLocaleString() : '—'}
                   </p>
                 </div>
                 <ArrowUpRight className="h-8 w-8 text-green-600" />
@@ -100,7 +115,7 @@ export default function DashboardPage() {
                 <div>
                   <p className="text-sm text-gray-600">Return</p>
                   <p className="text-2xl font-bold text-green-600">
-                    +{mockStats.returnPercentage}%
+                    {stats ? '+' + stats.returnPercentage + '%' : '—'}
                   </p>
                 </div>
                 <PieChart className="h-8 w-8 text-blue-600" />

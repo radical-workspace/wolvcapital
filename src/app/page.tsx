@@ -1,10 +1,25 @@
 'use client'
 
 import Link from 'next/link'
-import { useAuth } from '@/hooks/useAuth'
+import { useEffect, useState } from 'react';
+import { apiRequest } from '@/lib/api';
 
 export default function HomePage() {
-  const { user, isAdmin } = useAuth()
+  const [user, setUser] = useState<any>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  useEffect(() => {
+    async function fetchProfile() {
+      try {
+        const data = await apiRequest('/api/profile');
+        setUser(data.profile?.user || null);
+        setIsAdmin(data.profile?.role === 'admin');
+      } catch (err) {
+        setUser(null);
+        setIsAdmin(false);
+      }
+    }
+    fetchProfile();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">

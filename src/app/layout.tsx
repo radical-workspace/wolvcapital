@@ -1,6 +1,6 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import { AuthProvider } from '@/hooks/useAuth'
+import { AuthProvider } from '@/hooks/useAuth-laravel'
 
 export const metadata: Metadata = {
   title: 'WolvCapital - Smart Investment Platform',
@@ -71,7 +71,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans">
-        <AuthProvider>
+  <AuthProvider>
           {children}
         </AuthProvider>
       </body>

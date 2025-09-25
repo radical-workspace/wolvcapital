@@ -1,0 +1,8 @@
+[
+    {
+        "id": "9ff5e8e3-a46c-45e3-b200-64ceda3905d4",
+        "email": "e2e_test_user2@example.com",
+        "role": "user",
+        "created_at": "2025-09-25 07:27:10"
+    }
+]

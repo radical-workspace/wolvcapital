@@ -1,7 +1,8 @@
-import { updateSession } from '@/lib/supabase-server'
 
-export async function middleware(request: any) {
-  return await updateSession(request)
+
+export function middleware(request: any) {
+  // Laravel handles session via cookies; no Next.js middleware needed for auth
+  return new Response(null, { status: 200 });
 }
 
 export const config = {

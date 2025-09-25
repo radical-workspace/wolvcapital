@@ -1,0 +1,10 @@
+
+  Migration name .................................................... Batch / Status  
+  0001_01_01_000000_create_users_table ..................................... [1] Ran  
+  2024_09_17_000000_create_users_table_Version2 ............................ Pending  
+  2024_09_17_000001_create_user_profiles_table ............................. [2] Ran  
+  2024_09_17_000002_create_investment_plans_table .......................... [2] Ran  
+  2024_09_17_000003_create_transactions_table .............................. [2] Ran  
+  2024_09_17_000004_create_user_investments_table .......................... [2] Ran  
+  2024_09_17_000005_create_admin_approvals_table ........................... [2] Ran  
+

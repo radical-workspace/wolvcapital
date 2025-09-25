@@ -1,0 +1,1 @@
+// Moved from root: src_types_laravel_Version2.ts

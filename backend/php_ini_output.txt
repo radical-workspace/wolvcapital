@@ -1,0 +1,4 @@
+Configuration File (php.ini) Path: 
+Loaded Configuration File:         C:\Windows\php-8.4.13-nts-Win32-vs17-x64\php.ini
+Scan for additional .ini files in: (none)
+Additional .ini files parsed:      (none)

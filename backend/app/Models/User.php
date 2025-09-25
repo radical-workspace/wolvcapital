@@ -31,22 +31,23 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
+     *
+     * Kept as $casts property so Laravel handles them correctly.
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
 
     /**
      * Get the user's profile.
      */
     public function profile(): HasOne
     {
-        return $this->hasOne(UserProfile::class);
+        // user_profiles uses 'id' as the primary key and references users.id.
+        // Define relation explicitly so Eloquent doesn't expect user_profiles.user_id.
+        return $this->hasOne(UserProfile::class, 'id', 'id');
     }
 
     /**

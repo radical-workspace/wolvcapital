@@ -1,0 +1,21 @@
+
+  GET|HEAD  / ...................................................................... 
+  POST      api/auth/login ................................ Api\AuthController@login
+  POST      api/auth/logout .............................. Api\AuthController@logout
+  POST      api/auth/register .......................... Api\AuthController@register
+  GET|HEAD  api/investment-plans ................ Api\InvestmentPlanController@index
+  POST      api/investment-plans ................ Api\InvestmentPlanController@store
+  GET|HEAD  api/investment-plans/{id} ............ Api\InvestmentPlanController@show
+  PUT       api/investment-plans/{id} .......... Api\InvestmentPlanController@update
+  DELETE    api/investment-plans/{id} ......... Api\InvestmentPlanController@destroy
+  GET|HEAD  api/profile ............................. Api\UserProfileController@show
+  PUT       api/profile ........................... Api\UserProfileController@update
+  GET|HEAD  api/profile/investment-summary Api\UserProfileController@investmentSummΓÇª
+  GET|HEAD  api/transactions ....................... Api\TransactionController@index
+  POST      api/transactions/invest ............... Api\TransactionController@invest
+  POST      api/transactions/withdraw ........... Api\TransactionController@withdraw
+  GET|HEAD  api/transactions/{id} ................... Api\TransactionController@show
+  GET|HEAD  up ..................................................................... 
+
+                                                                 Showing [17] routes
+

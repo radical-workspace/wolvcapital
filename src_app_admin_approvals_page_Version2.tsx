@@ -1,19 +1,24 @@
+
 'use client';
 import { useState, useEffect } from 'react';
-import { laravelApi } from '../../../lib/laravel-api';
-import { AdminApproval } from '../../../types/laravel';
+import { apiRequest } from './src/lib/api';
+import { AdminApproval } from './src/types/laravel';
 
 export default function AdminApprovalsPage() {
   const [approvals, setApprovals] = useState<AdminApproval[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    laravelApi.get('/approvals').then(res => setApprovals(res.data)).finally(() => setLoading(false));
+  apiRequest('/approvals').then((res: { data: AdminApproval[] }) => setApprovals(res.data)).finally(() => setLoading(false));
   }, []);
 
-  const handleReview = async (id: number, status: 'approved' | 'rejected') => {
-    await laravelApi.put(`/approvals/${id}`, { status });
-    setApprovals(approvals.map(a => a.id === id ? { ...a, status } : a));
+  const handleReview = async (id: string, status: 'approved' | 'rejected') => {
+    await apiRequest(`/approvals/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ status }),
+      headers: { 'Content-Type': 'application/json' }
+    });
+  setApprovals(approvals.map(a => a.id === id ? { ...a, status } : a));
   };
 
   if (loading) return <div>Loading...</div>;
@@ -24,7 +29,7 @@ export default function AdminApprovalsPage() {
       <ul>
         {approvals.map(a => (
           <li key={a.id}>
-            <strong>{a.type}</strong> - {a.status}
+            <strong>{a.approval_type}</strong> - {a.status}
             <button onClick={() => handleReview(a.id, 'approved')}>Approve</button>
             <button onClick={() => handleReview(a.id, 'rejected')}>Reject</button>
           </li>
