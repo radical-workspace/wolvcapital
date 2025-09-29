@@ -1,14 +1,26 @@
-// Centralized API utility for Laravel + Next.js
-export async function apiRequest(endpoint: string, options: RequestInit = {}) {
-  const response = await fetch(endpoint, {
-    ...options,
-    credentials: 'include', // Always send cookies for Laravel auth
-    headers: {
-      'Content-Type': 'application/json',
-      ...(options.headers || {}),
-    },
+import axios, { AxiosRequestConfig } from 'axios';
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000/api';
+export async function apiGet(path: string, init?: RequestInit) {
+  const res = await fetch(`${API_BASE}${path}`, { ...init, method: "GET" });
+  if (!res.ok) throw new Error(`GET ${path} failed: ${res.status}`);
+  return res.json();
+}
+
+export async function apiRequest(path: string, config?: AxiosRequestConfig) {
+  const url = path.startsWith('/') ? `${API_BASE}${path}` : `${API_BASE}/${path}`;
+  return axios({ url, withCredentials: true, ...config });
+}
+declare const process: any;
+
+
+export async function apiPost(path: string, body: any, init?: RequestInit) {
+  const res = await fetch(`${API_BASE}${path}`, {
+    ...init,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...(init?.headers || {}) },
+    body: JSON.stringify(body),
   });
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.message || 'Request failed');
-  return data;
+  if (!res.ok) throw new Error(`POST ${path} failed: ${res.status}`);
+  return res.json();
 }

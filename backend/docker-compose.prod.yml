@@ -1,10 +1,8 @@
-version: "3.8"
-
 services:
   frontend:
     build:
-      context: ./frontend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: frontend/Dockerfile
     image: wolvcapital-frontend:prod
     environment:
       NODE_ENV: production

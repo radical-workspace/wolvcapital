@@ -1,0 +1,14 @@
+# Laravel
+vendor
+node_modules
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/logs/*
+
+.env
+*.log
+.git
+.gitignore
+.vscode
+.DS_Store

@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { apiRequest } from '@/lib/api';
+import { apiRequest } from '../lib/api';
 // Update the import path and filename to match your actual hook file
 // import { useAuth } from ;
 // If your useAuth hook is located elsewhere, update the path accordingly, e.g.:
